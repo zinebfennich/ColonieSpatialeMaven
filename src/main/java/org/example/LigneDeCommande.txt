@@ -1,0 +1,29 @@
+**Pour le mode dev : 
+ouvrir le dossier partage-de-colonie-spatiale et ouvrir le bash:
+
+javac .\src\Affichages\*.java  .\src\Colonie\*.java  .\src\DataAccess\*.java  .\src\ExceptionColonie\*.java  .\src\Main1\*.java  .\src\Menus\*.java  .\src\Service\*.java  -d bin
+
+java -cp bin Main1.Main1
+
+
+**Pour créer le fichier .jar à rendre :
+ouvrir le dossier partage-de-colonie-spatiale et ouvrir le bash (il va se créer dans le repertoire courant): 
+
+jar cfe PartageColonie.jar Main1.Main1 -C bin .
+
+
+
+
+
+**A mettre dans le readme pour les instructions d'exécution :
+se mettre dans le répertoire qui contient le .jar et ouvrir cmd :
+
+java -jar PartageColonie.jar
+
+ou 
+
+java -jar PartageColonie.jar  \D:\chemin\fichier
+
+
+
+
