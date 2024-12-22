@@ -1,7 +1,7 @@
-package org.example.DataAccess;
+package DataAccess;
 
-import org.example.Colonie.*;
-import org.example.ExceptionColonie.ExceptionColon;
+import Colonie.*;
+import ExceptionColonie.ExceptionColon;
 
 import java.io.*;
 import java.util.*;
@@ -113,7 +113,7 @@ public class FichierColonie {
 
 
 
-    public static void saveAttribution(String nomFichier, Colonie colonie) throws IOException {
+    public static void saveAttribution(String nomFichier, Colonie colonie, Scanner scanner) throws IOException {
         // Vérifiez si toutes les ressources sont attribuées
         if (!colonie.toutesRessourcesAttribuees()) {
             throw new IOException("Erreur : Les ressources n'ont pas ete attribuees a tous les colons. Veuillez effectuer une attribution avant de sauvegarder.");
@@ -128,8 +128,23 @@ public class FichierColonie {
         File fichier = new File(nomFichier);
 
         // Vérifiez si le fichier existe déjà
-        if (fichier.exists()) {
-            throw new IOException("Erreur : Un fichier avec le nom '" + nomFichier + "' existe deja dans le repertoire courant.");
+        while (fichier.exists()) {
+            System.out.println("Un fichier avec le nom '" + nomFichier + "' existe deje.");
+            System.out.println("Voulez-vous l'ecraser ? (oui/non) : ");
+            String reponse = scanner.nextLine().trim().toLowerCase();
+
+            if (reponse.equals("oui")) {
+                break; // Continuer pour écraser le fichier
+            } else if (reponse.equals("non")) {
+                System.out.println("Veuillez entrer un autre nom de fichier :");
+                nomFichier = scanner.nextLine().trim();
+                if (!nomFichier.endsWith(".txt")) {
+                    nomFichier += ".txt";
+                }
+                fichier = new File(nomFichier);
+            } else {
+                System.out.println("Reponse invalide. Veuillez repondre par 'oui' ou 'non'.");
+            }
         }
 
         // Écriture dans le fichier

@@ -1,8 +1,8 @@
-package org.example.Affichages;
+package Affichages;
 
-import org.example.Colonie.Colon;
-import org.example.Colonie.Colonie;
-import org.example.Colonie.Ressource;
+import Colonie.Colon;
+import Colonie.Colonie;
+import Colonie.Ressource;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ public class RecapColonie {
     }
 
     public void afficherEtatColonie() {
+        System.out.println("\n=== Recapitulatif de l'etat de la colonie ===");
         System.out.println("=== Etat de la Colonie ===");
         List<Colon> colons = colonie.getlistecolons();
 
@@ -54,4 +55,30 @@ public class RecapColonie {
 
         System.out.println("=== Fin de l'etat de la colonie ===");
     }
+
+
+    public void affichageaffection() {
+        // Affichage du nombre de colons jaloux
+        System.out.println("\n*** Voici le nombre de colons jaloux : ***");
+        System.out.println("   " + colonie.nombreColonsJaloux());
+
+        // Affichage de l'affectation des ressources
+        System.out.println("\n*** Voici l'affectation des ressources ***");
+        System.out.println("Colon                Ressource attribuee");
+        System.out.println("------------------------------------------");
+
+        // Trier les colons par nom et afficher les affectations
+        colonie.trierColonsParNom();
+
+        for (Colon colon : colonie.getListeColons()) {
+            Ressource ressource = colon.getRessourceAttribuee(); // Obtenir la ressource attribuée
+
+            if (ressource != null) {
+                System.out.printf("%-20s %s%n", colon.getNom(), ressource.getNom());
+            } else {
+                System.out.printf("%-20s %s%n", colon.getNom(), "aucune ressource attribuée");
+            }
+        }
+    }
+
 }

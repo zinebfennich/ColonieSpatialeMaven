@@ -1,4 +1,4 @@
-package org.example.ExceptionColonie;
+package ExceptionColonie;
 
 public class ExceptionColon extends Exception {
 

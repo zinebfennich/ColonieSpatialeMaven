@@ -1,6 +1,6 @@
-package org.example.Colonie;
+package Colonie;
 
-import org.example.ExceptionColonie.ExceptionColon;
+import ExceptionColonie.ExceptionColon;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -22,7 +22,7 @@ public class Colonie {
 
     public void initialiserColons(List<String> nomsColons) {
         for (String nom : nomsColons) {
-             colons.add(new Colon(nom)); }
+            colons.add(new Colon(nom)); }
     }
     public void initialiserRessources(List<String> nomsRessources) {
         for (String nom : nomsRessources) {
@@ -78,7 +78,7 @@ public class Colonie {
 
 
     //Cette affectation optimisee retourne la meme chose que laffectation naive
-    /*public void affectationOptimisee() { 
+    /*public void affectationOptimisee() {
         // Étape 1 : Trier les colons par ordre décroissant du nombre d'ennemis
         List<Colon> colonsTries = new ArrayList<>(colons);
         colonsTries.sort((a, b) -> b.getEnnemis().size() - a.getEnnemis().size());
@@ -114,7 +114,7 @@ public class Colonie {
             }
         }
     }*/
-    
+
 
     public int nombreColonsJaloux() {
         int nombreJaloux = 0;
@@ -143,19 +143,7 @@ public class Colonie {
         return null;
     }
 
-    public void affichageaffection() {
-        trierColonsParNom(); // Trier les colons par nom
 
-        for (Colon colon : colons) {
-            Ressource ressource = colon.getRessourceAttribuee(); // Obtenir la ressource attribuée au colon
-
-            if (ressource != null) { // Vérifie si la ressource est attribuée
-                System.out.println(colon.getNom() + " : " + ressource.getNom());
-            } else {
-                System.out.println(colon.getNom() + " : aucune ressource attribuee");
-            }
-        }
-    }
 
 
     public void echangerRessources(Colon colon1, Colon colon2) {

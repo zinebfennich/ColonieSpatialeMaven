@@ -1,7 +1,9 @@
-package org.example.Menus;
+package Menus;
 
-import org.example.Colonie.*;
-import org.example.Service.AttributionOptimale;
+import Affichages.RecapColonie;
+import Colonie.*;
+import Service.AttributionNaive;
+import Service.AttributionOptimale;
 
 import java.util.List;
 import java.util.Scanner;
@@ -17,16 +19,18 @@ public class Menu2 {
     }
 
     public void afficherMenu2(Scanner scanner1) throws Exception {
-        //colonie.affectationNaive();
+        AttributionNaive attNaive = new AttributionNaive(colonie.getlistecolons(),colonie.getRessources(),colonie);
+        attNaive.affectationNaive();
+        RecapColonie affichage = new RecapColonie(colonie);
         //colonie.affectationOptimisee(); // Remplace affectationNaive par attributionOptimale
         // Appel de l'attribution optimisée mta el tfol
-        List<Ressource> ressources = colonie.getRessources().keySet().stream().toList(); // Exemple pour obtenir les ressources
+        //List<Ressource> ressources = colonie.getRessources().keySet().stream().toList(); // Exemple pour obtenir les ressources
 
         // Créez une instance d'AttributionOptimale avec la colonie unique
-        AttributionOptimale attributionOpt = new AttributionOptimale(colonie, colonie.getListeColons(), colonie.getRessources());
+        //AttributionOptimale attributionOpt = new AttributionOptimale(colonie, colonie.getListeColons(), colonie.getRessources());
 
         // Appel de la méthode d'attribution optimisée
-        int coutJaloux = attributionOpt.affectationOptimisee(ressources);
+        //int coutJaloux = attributionOpt.affectationOptimisee(ressources);
         //System.out.println("Coût de jalousie après attribution optimisée : " + coutJaloux);
 
 
@@ -83,13 +87,11 @@ public class Menu2 {
                     } else {
                         System.out.println("Erreur de lecture de colons, veuillez entrer deux caracteres.");
                     }
-                    colonie.affichageaffection();
+                    affichage.affichageaffection();
                     break;
 
                 case 2:
-                    System.out.println("Voici le nombre de colons jaloux : ");
-                    System.out.println(colonie.nombreColonsJaloux());
-                    colonie.affichageaffection();
+                    affichage.affichageaffection();
                     break;
                 case 3:
                     break;

@@ -1,11 +1,11 @@
-package org.example.Service;
-import org.example.Colonie.*;
+package Service;
+import Colonie.*;
 
 import java.util.*;
 
 
 public class AttributionOptimale {
-    private List<Colon> colons; 
+    private List<Colon> colons;
     private Map<Ressource, Colon> mapRessources;
     private Colonie colonies; // Une seule colonie
 
@@ -100,15 +100,15 @@ private int calculerTotalJalousie(List<Colon> colons) {
         }
     }*/
 
-//algo mta el tfol
-public int affectationOptimisee ( List<Ressource> ressources) throws Exception {
-      //  Colonie colonie = colonies.get(colonieN);
-        
+    //algo mta el tfol
+    public int affectationOptimisee ( List<Ressource> ressources) throws Exception {
+        //  Colonie colonie = colonies.get(colonieN);
+
         // Vérification initiale
         if (colonies.getListeColons().size() != ressources.size()) {
             throw new Exception("Nombre de colons different du nombre de ressources");
         }
-        
+
         // 1. Combinaison des deux algos Effectuer l'affectation naïve pour letat initial
         //colonies.affectationNaive(); // Appel de la méthode d'affectation naïve
         AttributionNaive attNaive = new AttributionNaive(colons,mapRessources,colonies);
@@ -116,66 +116,66 @@ public int affectationOptimisee ( List<Ressource> ressources) throws Exception {
 
         // 1. Créer une copie du graphe des relations et des préférences pour manipulation
         List<Colon> colonsTries = new ArrayList<>(colonies.getListeColons());
-        
+
         // 2. Trier les colons par ordre décroissant de contraintes (nombre de relations détestables)
         colonsTries.sort((c1, c2) -> c2.getEnnemis().size() - c1.getEnnemis().size());
-        
+
         int meilleurCout = Integer.MAX_VALUE;
         Map<Colon, Ressource> meilleureAffectation = new HashMap<>();
-        
+
         // 3. Phase 1 : Essayer plusieurs affectations initiales
-    for (int essai = 0; essai < 10; essai++) {
-        // Réinitialiser les ressources
-        List<Ressource> ressourcesTemp = new ArrayList<>(ressources);
-        
-            
+        for (int essai = 0; essai < 10; essai++) {
+            // Réinitialiser les ressources
+            List<Ressource> ressourcesTemp = new ArrayList<>(ressources);
+
+
             // Affecter les ressources en priorité aux colons ayant le plus de contraintes
             for (Colon colon : colonsTries) {
                 Ressource meilleureRessource = null;
                 int minConflits = Integer.MAX_VALUE;
-                
+
                 // Pour chaque ressource disponible
-            for (Ressource ressourceCandidate : ressourcesTemp) {
-                colon.setRessourceAttribuee(ressourceCandidate);
-                 
+                for (Ressource ressourceCandidate : ressourcesTemp) {
+                    colon.setRessourceAttribuee(ressourceCandidate);
+
                     // Calculer les conflits potentiels
-                int conflits = 0;
-                for (Colon voisin : colon.getEnnemis()) {
-                    if (voisin.getRessourceAttribuee() != null && 
-                        colon.getlistepreferences().indexOf(voisin.getRessourceAttribuee()) < colon.getlistepreferences().indexOf(ressourceCandidate)) {
-                        conflits++;
+                    int conflits = 0;
+                    for (Colon voisin : colon.getEnnemis()) {
+                        if (voisin.getRessourceAttribuee() != null &&
+                                colon.getlistepreferences().indexOf(voisin.getRessourceAttribuee()) < colon.getlistepreferences().indexOf(ressourceCandidate)) {
+                            conflits++;
+                        }
                     }
-                }
-                    
+
                     if (conflits < minConflits) {
                         minConflits = conflits;
                         meilleureRessource = ressourceCandidate;
                     }
                 }
-                
+
                 // Affecter la meilleure ressource trouvée
-            if (meilleureRessource != null) {
-                colon.setRessourceAttribuee(meilleureRessource);
-                ressourcesTemp.remove(meilleureRessource);
+                if (meilleureRessource != null) {
+                    colon.setRessourceAttribuee(meilleureRessource);
+                    ressourcesTemp.remove(meilleureRessource);
+                }
             }
-            }
-            
+
             // 4. Phase 2 : Optimisation locale par échanges
             boolean amelioration;
             do {
                 amelioration = false;
                 int coutActuel = colonies.nombreColonsJaloux();
-                
+
                 // Essayer tous les échanges possibles entre paires de colons
                 for (int i = 0; i < colonsTries.size(); i++) {
                     for (int j = i + 1; j < colonsTries.size(); j++) {
                         Colon colon1 = colonsTries.get(i);
                         Colon colon2 = colonsTries.get(j);
-                        
+
                         // Tester l'échange
                         colonies.echangerRessources(colon1, colon2);
                         int nouveauCout = colonies.nombreColonsJaloux();
-                        
+
                         if (nouveauCout < coutActuel) {
                             coutActuel = nouveauCout;
                             amelioration = true;
@@ -186,7 +186,7 @@ public int affectationOptimisee ( List<Ressource> ressources) throws Exception {
                     }
                 }
             } while (amelioration);
-            
+
             // Mettre à jour la meilleure solution si nécessaire
             int coutFinal = colonies.nombreColonsJaloux();
             if (coutFinal < meilleurCout) {
@@ -197,12 +197,12 @@ public int affectationOptimisee ( List<Ressource> ressources) throws Exception {
                 }
             }
         }
-        
-       // 5. Restaurer la meilleure affectation trouvée
-    for (Map.Entry<Colon, Ressource> entry : meilleureAffectation.entrySet()) {
-        entry.getKey().setRessourceAttribuee(entry.getValue());
-    }
-        
+
+        // 5. Restaurer la meilleure affectation trouvée
+        for (Map.Entry<Colon, Ressource> entry : meilleureAffectation.entrySet()) {
+            entry.getKey().setRessourceAttribuee(entry.getValue());
+        }
+
         return meilleurCout;
 
 

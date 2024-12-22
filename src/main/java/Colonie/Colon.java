@@ -1,4 +1,4 @@
-package org.example.Colonie;
+package Colonie;
 
 import java.util.*;
 

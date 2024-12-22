@@ -1,12 +1,12 @@
+package Main1;
 
-package org.example.Main1;
-import org.example.Menus.Menu2;
-import org.example.Colonie.Colonie;
-import org.example.Affichages.RecapColonie;
-import org.example.DataAccess.FichierColonie;
-import org.example.Menus.Menu1;
-import org.example.ExceptionColonie.ExceptionColon;
-import org.example.Menus.Menu3;
+import Menus.Menu2;
+import Colonie.Colonie;
+import Affichages.RecapColonie;
+import DataAccess.FichierColonie;
+import Menus.Menu1;
+import ExceptionColonie.ExceptionColon;
+import Menus.Menu3;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -18,16 +18,17 @@ public class Main1 {
         Scanner scanner = new Scanner(System.in); // Création du scanner une seule fois
         Colonie colonie = null;
 
+
         // Vérifier si un fichier est passé en argument
         if (args.length > 0) {
             String cheminFichier = args[0];
-            System.out.println("Chargement des données depuis le fichier : " + cheminFichier);
+            System.out.println("Chargement des donnees depuis le fichier : " + cheminFichier);
 
             try {
                 colonie = FichierColonie.chargerDepuisFichier(cheminFichier, n);
-                System.out.println("Colonie chargée depuis le fichier !");
+                System.out.println("Colonie chargee depuis le fichier !");
             } catch (IOException e) {
-                System.err.println("Erreur d'entrée/sortie : " + e.getMessage());
+                System.err.println("Erreur d'entree/sortie : " + e.getMessage());
                 scanner.close(); // Fermer le scanner avant de quitter
                 return;
             } catch (ExceptionColon e) {
@@ -35,6 +36,8 @@ public class Main1 {
                 scanner.close(); // Fermer le scanner avant de quitter
                 return;
             }
+            RecapColonie affichage1 = new RecapColonie(colonie);
+            affichage1.afficherEtatColonie();
 
             // Si la colonie est chargée, afficher le menu 3
             Menu3 menu3 = new Menu3(colonie);
@@ -43,14 +46,21 @@ public class Main1 {
         } else {
             // Aucune argument fourni, exécuter les menus 1 et 2
             System.out.println("Aucun fichier fourni. Construction manuelle de la colonie.");
-            System.out.println("Entrez la taille de la colonie spatiale :");
-            n = scanner.nextInt();
-            scanner.nextLine(); // Consomme le saut de ligne après nextInt()
+            // Demande de la taille de la colonie jusqu'à ce qu'une valeur valide soit fournie
+            boolean tailleValide = false;
+            while (!tailleValide) {
+                System.out.println("Entrez la taille de la colonie spatiale (doit être un entier positif) :");
+                try {
+                    n = Integer.parseInt(scanner.nextLine());
+                    if (n > 0) {
+                        tailleValide = true; // La taille est valide
+                    } else {
+                        System.out.println("Erreur : La taille de la colonie doit être un entier positif. Veuillez réessayer.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Erreur : Veuillez entrer un nombre entier valide.");
+                }
 
-            if (n < 0) {
-                System.out.println("La taille de la colonie ne peut pas être négative.");
-                scanner.close(); // Fermer le scanner avant de quitter
-                return;
             }
 
             Menu1 menu1 = new Menu1(n);
@@ -58,15 +68,14 @@ public class Main1 {
 
             colonie = menu1.getColonie();
             if (colonie == null) {
-                System.out.println("Erreur : La colonie n'a pas été correctement initialisée.");
+                System.out.println("Erreur : La colonie n'a pas ete correctement initialisee.");
                 scanner.close(); // Fermer le scanner avant de quitter
                 return;
             }
 
             // Afficher le récap de la colonie avant le menu 2
-            System.out.println("\n=== Récapitulatif de l'état de la colonie ===");
-            RecapColonie recap = new RecapColonie(colonie);
-            recap.afficherEtatColonie();
+            RecapColonie affichage2 = new RecapColonie(colonie);
+            affichage2.afficherEtatColonie();
 
             Menu2 menu2 = new Menu2(colonie);
             menu2.afficherMenu2(scanner);

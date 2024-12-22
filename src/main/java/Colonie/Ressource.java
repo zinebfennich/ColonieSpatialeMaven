@@ -1,4 +1,4 @@
-package org.example.Colonie;
+package Colonie;
 
 public class Ressource {
     private String nom;

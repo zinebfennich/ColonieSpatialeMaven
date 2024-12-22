@@ -1,7 +1,5 @@
-package org.example.Service;
-import org.example.Colonie.*;
-
-
+package Service;
+import Colonie.*;
 import java.util.*;
 
 public class AttributionNaive {
